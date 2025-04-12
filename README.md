@@ -21,6 +21,7 @@ Once the server is running, open your browser and navigate to `http://localhost:
 My system version:
 
 Angular CLI: 19.2.7
+
 Node: 22.11.0
 
 ## Code scaffolding
