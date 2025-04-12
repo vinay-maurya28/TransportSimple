@@ -1,0 +1,109 @@
+
+<div>
+  <div class="title mb-2">
+    Select Cities
+  </div>
+  <form #validity="ngForm" [formGroup]="tripForm" (ngSubmit)="addRoute(validity)" class="row gy-2">
+    <div class="col-md-2 col-12">
+      <div class="form-floating">
+        <select class="form-select" formControlName="trip_from" id="floatingSelect" aria-label="Floating label select example">
+          <option selected value="null">Select City</option>
+          <option *ngFor="let city of cities; let i=index" [value]="i"  [disabled]="f['trip_to'].value == i?true:null">{{city.city}}</option>
+        </select>
+        <label for="floatingSelect">From</label>
+      </div>
+      <div class="text-danger" *ngIf="validity.submitted && f['trip_from'].invalid">
+        <p *ngIf="f['trip_from'].errors?.['required']">This field is required.</p>
+      </div>
+    </div>
+    <div class="col-md-2 col-12">
+      <div class="form-floating">
+        <select class="form-select" formControlName="trip_to" id="floatingSelect" aria-label="Floating label select example">
+          <option selected value="null">Select City</option>
+          <option *ngFor="let city of cities; let i=index" [value]="i" [disabled]="f['trip_from'].value == i?true:null">{{city.city}}</option>
+        </select>
+        <label for="floatingSelect">To</label>
+      </div>
+    
+      <div class="text-danger" *ngIf="validity.submitted && f['trip_to'].invalid">
+        <p *ngIf="f['trip_to'].errors?.['required']">This field is required.</p>
+      </div>
+    </div>
+    <div class="col-md-1 col-12">
+      <button type="submit" class="btn btn-primary p-3" >GO</button>
+    </div>
+  </form>
+  <div class="title mt-4 mb-2">
+    Route Map
+  </div>
+  <div class="card ">
+    <div class="card-body pb-5 px-5">
+      @for (trip of trips; track $index) {
+        <div class="straight" *ngIf="trip.line=='straight'" [style.color]="trip.color">
+          <svg width="214" height="9" viewBox="0 0 214 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="4.5" cy="4.5" r="4.5" fill="currentColor"/>
+            <line x1="13" y1="4" x2="214" y2="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <div class="label-down">
+            {{trip.from}} - {{trip.to}}
+          </div>
+        </div>
+        <div class="arrow" *ngIf="trip.line=='arrow'" [style.color]="trip.color">
+          <svg width="214" height="12" viewBox="0 0 214 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="4.5" cy="6.5" r="4.5" fill="currentColor"/>
+            <path d="M214 6L204 0.226497V11.7735L214 6ZM13 7H205V5H13V7Z" fill="currentColor"/>
+          </svg>
+          <div class="label-down">
+            {{trip.from}} - {{trip.to}}
+
+          </div>
+        </div>
+        <div class="up" *ngIf="trip.line=='up'" [style.color]="trip.color">
+          <svg width="137" height="94" viewBox="0 0 137 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.32119 87.5199C8.32119 89.7385 6.56095 91.5199 4.41059 91.5199C2.26024 91.5199 0.5 89.7385 0.5 87.5199C0.5 85.3013 2.26024 83.5199 4.41059 83.5199C6.56095 83.5199 8.32119 85.3013 8.32119 87.5199Z" stroke="currentColor"/>
+            <path d="M13.2967 87.7269C33.8969 88.0846 53.4872 83.7475 69.6177 47.8099C85.7482 11.8722 117.607 6.34598 136.307 7.70547" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <div class="label-down">
+            {{trip.from}} - {{trip.to}}
+
+          </div>
+        </div>
+        <div class="l2-straight"  *ngIf="trip.line=='l2-straight'" [style.color]="trip.color">
+          <svg width="214" height="9" viewBox="0 0 214 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="13" y1="4" x2="214" y2="4" stroke="currentColor" stroke-width="2"/>
+            <circle cx="4.5" cy="4.5" r="4" stroke="currentColor"/>
+          </svg>
+          <div class="label-up">
+            {{trip.from}} - {{trip.to}}
+
+          </div>
+        </div>
+        <div class="l2-arrow"  *ngIf="trip.line=='l2-arrow'" [style.color]="trip.color">
+          <svg width="214" height="12" viewBox="0 0 214 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M214 6L204 0.226497V11.7735L214 6ZM13 7H205V5H13V7Z" fill="currentColor"/>
+            <path d="M214 6L204 0.226497V11.7735L214 6ZM13 7H205V5H13V7Z" fill="currentColor" fill-opacity="0.2"/>
+            <circle cx="4.5" cy="6.5" r="4" stroke="currentColor"/>
+            <circle cx="4.5" cy="6.5" r="4" stroke="currentColor" stroke-opacity="0.2"/>
+            </svg>
+          <div class="label-up">
+            {{trip.from}} - {{trip.to}}
+
+          </div>
+        </div>
+        <div class="down"  *ngIf="trip.line=='down'" [style.color]="trip.color">
+          <svg width="137" height="94" viewBox="0 0 137 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8.32119 6.23862C8.32119 4.01998 6.56095 2.23862 4.41059 2.23862C2.26024 2.23862 0.5 4.01998 0.5 6.23862C0.5 8.45727 2.26024 10.2386 4.41059 10.2386C6.56095 10.2386 8.32119 8.45727 8.32119 6.23862Z" stroke="currentColor"/>
+            <path d="M13.2967 6.03164C33.8969 5.67396 53.4872 10.011 69.6177 45.9486C85.7482 81.8863 117.607 87.4125 136.307 86.053" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <div class="label-up">
+            {{trip.from}} - {{trip.to}}
+
+          </div>
+        </div>
+      }
+
+      
+    </div>
+  </div>
+
+</div>
